@@ -1,21 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component, Fragment } from 'react';
+import { StatusBar } from 'react-native';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
+import Routes from './screens/Routes'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+class App extends Component {
+ state = {
+   isFontLoaded: false
+ }
+
+ async componentDidMount() {
+   await Font.loadAsync({
+     'dogbyte': require('./assets/fonts/dogbyte.otf'),
+   });
+   this.setState({ isFontLoaded: true })
+ }
+
+ render() {
+   if(!this.state.isFontLoaded) {
+     return <AppLoading />
+   } else {
+     return (
+       <>
+          <StatusBar barStyle="light-content" />
+          <Routes />
+      </>
+     )
+   }
+ }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
